@@ -34,11 +34,15 @@ class FilterableRepositoryCustomImpl(
         return Expressions.asBoolean(true).isTrue
     }
 
-    override fun <T, U : EntityPath<T>> findByFilterable(
-        filterable: Filterable,
-        pageable: Pageable,
-        qClass: U
-    ): List<T> {
-        TODO("Not yet implemented")
-    }
+    override fun <T, U : EntityPath<T>> findByFilterable(filterable: Filterable, pageable: Pageable, qClass: U): List<T>
+    = queryFactory.selectFrom(qClass)
+        .where(whereQueryOfFilterable(filterable, qClass))
+        .offset(pageable.offset)
+        .limit(pageable.pageSize.toLong())
+        .fetch()
+
+    private fun <T, U : EntityPath<T>> whereQueryOfFilterable(filterable: Filterable, qClass: U) : BooleanExpression
+    = filterable.getConditions()
+        .map { whereQueryOfCondition(it, qClass) }
+        .reduce { acc, boolExp -> filterable.getConditionOption().query.invoke(acc, boolExp) }
 }
