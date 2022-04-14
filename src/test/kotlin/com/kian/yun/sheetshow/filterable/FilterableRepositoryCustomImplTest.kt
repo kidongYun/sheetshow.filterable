@@ -4,7 +4,6 @@ import com.kian.yun.sheetshow.filterable.helper.Dummy
 import com.kian.yun.sheetshow.filterable.helper.DummyRepository
 import com.kian.yun.sheetshow.filterable.helper.QDummy
 import com.kian.yun.sheetshow.filterable.queryOptions.QueryOptions
-import com.kian.yun.sheetshow.filterable.queryOptions.SimpleCondition
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.inspectors.forAtLeastOne

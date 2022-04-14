@@ -1,15 +1,13 @@
 package com.kian.yun.sheetshow.filterable
 
+import com.kian.yun.sheetshow.filterable.queryOptions.QueryOptionProviders
+import com.kian.yun.sheetshow.filterable.pathAdapter.PathAdapters
 import com.kian.yun.sheetshow.filterable.util.isNotStatic
-import com.kian.yun.sheetshow.filterable.util.logger
 import com.querydsl.core.types.EntityPath
-import com.querydsl.core.types.Path
 import com.querydsl.core.types.dsl.*
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
-import java.lang.reflect.Field
-import kotlin.io.path.Path
 
 @Repository
 class FilterableRepositoryCustomImpl(
@@ -26,19 +24,11 @@ class FilterableRepositoryCustomImpl(
     private fun <T, U : EntityPath<T>> whereQueryOfCondition(condition: Condition, qClass: U) : BooleanExpression {
         qClass::class.java.declaredFields
             .filter { isNotStatic(it) }
-            .map<Field, Path<out Any>> {
-                Expressions.stringPath(it.name)
-            }
-            .filter {
-                val log = logger()
-                log.info("it : {}", it.toString())
-                log.info("qClass : {}", condition.getTarget())
-                it.toString() == condition.getTarget()
-            }
+            .map { PathAdapters.aliasOf(it.type.simpleName).create(it) }
+            .filter { it.toString() == condition.getTarget() }
             .forEach {
-                return condition.getQueryOptions()
-                    .provide(qClass.type.getDeclaredField(condition.getTarget()).type)
-                    .query(condition.getValues(), it)
+                return QueryOptionProviders.aliasOf(qClass.type.getDeclaredField(condition.getTarget()).type.simpleName)
+                    .query(condition.getValues(), it, condition.getQueryOptions())
             }
 
         return Expressions.asBoolean(true).isTrue

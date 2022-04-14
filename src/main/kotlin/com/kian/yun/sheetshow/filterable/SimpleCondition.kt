@@ -1,6 +1,6 @@
-package com.kian.yun.sheetshow.filterable.queryOptions
+package com.kian.yun.sheetshow.filterable
 
-import com.kian.yun.sheetshow.filterable.Condition
+import com.kian.yun.sheetshow.filterable.queryOptions.QueryOptions
 
 class SimpleCondition(
     private val target: String,

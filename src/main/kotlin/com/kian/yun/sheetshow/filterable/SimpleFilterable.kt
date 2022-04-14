@@ -1,8 +1,4 @@
-package com.kian.yun.sheetshow.filterable.queryOptions
-
-import com.kian.yun.sheetshow.filterable.Condition
-import com.kian.yun.sheetshow.filterable.ConditionOption
-import com.kian.yun.sheetshow.filterable.Filterable
+package com.kian.yun.sheetshow.filterable
 
 class SimpleFilterable(
     private val conditions: List<Condition>,
