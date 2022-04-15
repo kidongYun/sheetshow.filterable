@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.6.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    `maven-publish`
 
     val kotlinVersion = "1.6.10"
     kotlin("jvm") version kotlinVersion
@@ -50,4 +51,16 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "org.kian.yun.sheetshow"
+            artifactId = "filterable"
+            version = "0.0.1-SNAPSHOT"
+
+            from(components["java"])
+        }
+    }
 }
