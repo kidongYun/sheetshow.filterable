@@ -2,7 +2,9 @@ package com.kian.yun.sheetshow.filterable
 
 import com.querydsl.core.types.EntityPath
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.NoRepositoryBean
 
+@NoRepositoryBean
 interface FilterableRepositoryCustom {
     fun <T, U : EntityPath<T>> findByCondition(condition: Condition, pageable: Pageable, qClass: U) : List<T>
 

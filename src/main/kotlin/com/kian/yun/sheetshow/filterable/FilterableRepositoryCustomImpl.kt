@@ -9,7 +9,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
-@Repository
 class FilterableRepositoryCustomImpl(
     private val queryFactory: JPAQueryFactory
 ) : FilterableRepositoryCustom {
